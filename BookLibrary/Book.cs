@@ -79,7 +79,7 @@ namespace BookLibrary
             {
                 format = "G";
             }
-
+            
             if (formatProvider == null)
             {
                 formatProvider = CultureInfo.CurrentCulture;
