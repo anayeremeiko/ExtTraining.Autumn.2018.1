@@ -70,7 +70,7 @@ namespace BookExtension
                 }
 
             Book book = (Book)arg;
-            return "Book record: " + book.Author + ", " + book.Title + ", " + book.Year + ", " + book.Price;
+            return $"Book record: {book.Author}, {book.Title}, {book.Year}, {book.Price}";
         }
 
         /// <summary>

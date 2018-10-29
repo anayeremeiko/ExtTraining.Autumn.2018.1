@@ -89,15 +89,15 @@ namespace BookLibrary
             {
                 case "G":
                 case "F":
-                    return "Book record: " + Author + ", " + Title + ", " + PublishingHouse + ", " + Year + ", " + Edition + ", " + Pages + ", " + Price;
+                    return $"Book record: {Author}, {Title}, {PublishingHouse}, {Year}, {Edition}, {Pages}, {Price}";
                 case "S":
-                    return "Book record: " + Author + ", " + Title + ", " + PublishingHouse;
+                    return $"Book record: {Author}, {Title}, {PublishingHouse}";
                 case "B":
-                    return "Book record: " + Author + ", " + Title;
+                    return $"Book record: {Author}, {Title}";
                 case "P":
-                    return "Book record: " + Title + ", " + PublishingHouse;
+                    return $"Book record: {Title}, {PublishingHouse}";
                 case "T":
-                    return "Book record: " + Title;
+                    return "Book record: {Title}";
                 default:
                     throw new FormatException($"The {format} format string is not supported.");
             }
