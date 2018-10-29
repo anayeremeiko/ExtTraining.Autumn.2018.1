@@ -78,7 +78,7 @@ namespace StringExtension
 
             if (result <= 0)
             {
-                throw new OverflowException($"{nameof(number)} is too big.");
+                throw new ArgumentException($"{nameof(number)} is too big.");
             }
 
             return result;

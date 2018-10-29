@@ -97,7 +97,7 @@ namespace BookLibrary
                 case "P":
                     return $"Book record: {Title}, {PublishingHouse}";
                 case "T":
-                    return "Book record: {Title}";
+                    return $"Book record: {Title}";
                 default:
                     throw new FormatException($"The {format} format string is not supported.");
             }
