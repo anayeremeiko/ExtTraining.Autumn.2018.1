@@ -15,18 +15,32 @@ namespace BookExtension.Tests
         public void CreateBookObject()
         {
             book = new Book("C# in Depth", "Jon Skeet", 2019, "Manning", 4, 900, 40);
-            formatProvider = new BookFormatExtension(CultureInfo.CreateSpecificCulture("en-US"));
+            formatProvider = new BookFormatExtension(CultureInfo.GetCultureInfo("en-US"));
         }
 
-        [TestCase("I", ExpectedResult = "Book record: Jon Skeet, C# in Depth, 2019, $40.000")]
-        [TestCase("G", ExpectedResult = "Book record: Jon Skeet, C# in Depth, Manning, 2019, 4, 900, $40.000")]
-        [TestCase("F", ExpectedResult = "Book record: Jon Skeet, C# in Depth, Manning, 2019, 4, 900, $40.000")]
+        [TestCase("I", ExpectedResult = "Book record: Jon Skeet, C# in Depth, 2019, 40,0000 Br")]
+        [TestCase("G", ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, 40,000 Br")]
+        [TestCase("F", ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, 40,000 Br")]
         [TestCase("S", ExpectedResult = "Book record: Jon Skeet, C# in Depth, Manning")]
         [TestCase("B", ExpectedResult = "Book record: Jon Skeet, C# in Depth")]
         [TestCase("P", ExpectedResult = "Book record: C# in Depth, Manning")]
         [TestCase("T", ExpectedResult = "Book record: C# in Depth")]
-        [TestCase(null, ExpectedResult = "Book record: Jon Skeet, C# in Depth, Manning, 2019, 4, 900, $40.000")]
-        [TestCase("   ", ExpectedResult = "Book record: Jon Skeet, C# in Depth, Manning, 2019, 4, 900, $40.000")]
+        [TestCase(null, ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, 40,000 Br")]
+        [TestCase("   ", ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, 40,000 Br")]
+        public string Format_ReturnFormattedStringRuCulture(string format)
+        {
+            return string.Format(new BookFormatExtension(CultureInfo.GetCultureInfo("ru-BY")), "{0:" + format + "}", book);
+        }
+
+        [TestCase("I", ExpectedResult = "Book record: Jon Skeet, C# in Depth, 2019, $40.0000")]
+        [TestCase("G", ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, $40.000")]
+        [TestCase("F", ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, $40.000")]
+        [TestCase("S", ExpectedResult = "Book record: Jon Skeet, C# in Depth, Manning")]
+        [TestCase("B", ExpectedResult = "Book record: Jon Skeet, C# in Depth")]
+        [TestCase("P", ExpectedResult = "Book record: C# in Depth, Manning")]
+        [TestCase("T", ExpectedResult = "Book record: C# in Depth")]
+        [TestCase(null, ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, $40.000")]
+        [TestCase("   ", ExpectedResult = "Book record:       Jon Skeet,     C# in Depth,         Manning, 2019, 4, 900, $40.000")]
         public string Format_ReturnFormattedString(string format)
         {
             return string.Format(formatProvider, "{0:" + format + "}", book);

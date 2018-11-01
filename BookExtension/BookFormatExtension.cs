@@ -12,7 +12,7 @@ namespace BookExtension
     {
         private IFormatProvider parent;
 
-        public BookFormatExtension() : this(CultureInfo.CurrentCulture) { }
+        public BookFormatExtension() : this(CultureInfo.InvariantCulture) { }
 
         public BookFormatExtension(IFormatProvider parent) => this.parent = parent;
 
@@ -44,6 +44,7 @@ namespace BookExtension
         {
             // Provide default formatting if arg is not a Book.
             if (arg.GetType() != typeof(Book))
+            {
                 try
                 {
                     return HandleOtherFormats(format, arg);
@@ -52,6 +53,7 @@ namespace BookExtension
                 {
                     throw new FormatException($"The format of '{format}' is invalid.", e);
                 }
+            }
 
             if (format is null)
             {
@@ -60,6 +62,7 @@ namespace BookExtension
 
             // Provide default formatting for unsupported format strings.
             if (format.ToUpper(CultureInfo.InvariantCulture) != "I")
+            {
                 try
                 {
                     return HandleOtherFormats(format, arg);
@@ -68,9 +71,11 @@ namespace BookExtension
                 {
                     throw new FormatException($"The format of '{format}' is invalid.", e);
                 }
+            }
 
             Book book = (Book)arg;
-            return $"Book record: {book.Author}, {book.Title}, {book.Year}, {book.Price}";
+
+            return $"Book record: {book.Author}, {book.Title}, {book.Year}, {book.Price.ToString("C4", parent)}";
         }
 
         /// <summary>

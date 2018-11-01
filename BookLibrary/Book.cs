@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace BookLibrary
 {
-    public class Book : IFormattable
+    public class Book : IFormattable, IEquatable<Book>, IComparable<Book>
     {
         private string title;
         private string author;
         private string year;
         private string publishingHouse;
-        private string edition;
-        private string pages;
-        private string price;
+        private int edition;
+        private int pages;
+        private decimal price;
 
         public Book(string title, string author, int year, string publishingHouse, int edition, int pages, decimal price)
         {
@@ -23,18 +23,43 @@ namespace BookLibrary
             Author = author;
             Year = year.ToString();
             PublishingHouse = publishingHouse;
-            Edition = edition.ToString();
-            Pages = pages.ToString();
-            Price = price.ToString("C3", CultureInfo.CreateSpecificCulture("en-US"));
+            Edition = edition;
+            Pages = pages;
+            Price = price;
         }
 
         public string Title { get => title; private set => title = value; }
         public string Author { get => author; private set => author = value; }
         public string Year { get => year; private set => year = value; }
         public string PublishingHouse { get => publishingHouse; private set => publishingHouse = value; }
-        public string Edition { get => edition; private set => edition = value; }
-        public string Pages { get => pages; private set => pages = value; }
-        public string Price { get => price; private set => price = value; }
+        public int Edition { get => edition; private set => edition = value; }
+        public int Pages { get => pages; private set => pages = value; }
+        public decimal Price { get => price; private set => price = value; }
+
+        public int CompareTo(Book other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return -1;
+            }
+
+            return (int)(Price - other.Price);
+        }
+
+        public bool Equals(Book other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(other, this))
+            {
+                return true;
+            }
+
+            return other.Author == Author && other.Title == Title;
+        }
 
         /// <summary>
         /// Converts to string.
@@ -57,6 +82,16 @@ namespace BookLibrary
         public string ToString(string format)
         {
             return ToString(format, CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Converts to string.
+        /// </summary>
+        /// <param name="formatProvider">Format Provider</param>
+        /// <returns>String representation.</returns>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ToString("G", formatProvider);
         }
 
         /// <summary>
@@ -89,7 +124,7 @@ namespace BookLibrary
             {
                 case "G":
                 case "F":
-                    return $"Book record: {Author}, {Title}, {PublishingHouse}, {Year}, {Edition}, {Pages}, {Price}";
+                    return $"Book record: {Author, 15}, {Title, 15}, {PublishingHouse, 15}, {Year, 4}, {Edition.ToString(formatProvider)}, {Pages.ToString(formatProvider)}, {Price.ToString("C3", formatProvider)}";
                 case "S":
                     return $"Book record: {Author}, {Title}, {PublishingHouse}";
                 case "B":
